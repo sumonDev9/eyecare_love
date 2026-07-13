@@ -3,8 +3,8 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
-let mainWindow;
-let tray;
+let mainWindow
+let tray
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -23,8 +23,8 @@ function createWindow() {
   // উইন্ডো ক্লোজ (X) বাটনে ক্লিক করলে অ্যাপটি বন্ধ না হয়ে ব্যাকগ্রাউন্ডে চলে যাবে
   mainWindow.on('close', (event) => {
     if (!app.isQuiting) {
-      event.preventDefault();
-      mainWindow.hide();
+      event.preventDefault()
+      mainWindow.hide()
     }
   })
 
@@ -45,26 +45,26 @@ function createTray() {
   tray = new Tray(icon)
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Open Settings', click: () => mainWindow.show() },
-    { 
-      label: 'Pause Reminder', 
-      type: 'checkbox', 
-      checked: false, 
+    {
+      label: 'Pause Reminder',
+      type: 'checkbox',
+      checked: false,
       click: (menuItem) => {
         mainWindow.webContents.send('toggle-pause', menuItem.checked)
       }
     },
     { type: 'separator' },
-    { 
-      label: 'Exit', 
+    {
+      label: 'Exit',
       click: () => {
-        app.isQuiting = true;
-        app.quit();
+        app.isQuiting = true
+        app.quit()
       }
     }
   ])
   tray.setToolTip('EyeCare Love ❤️\nBecause every blink matters.')
   tray.setContextMenu(contextMenu)
-  
+
   // Tray আইকনে ক্লিক করলেও উইন্ডো ওপেন হবে
   tray.on('click', () => {
     mainWindow.show()
@@ -107,14 +107,14 @@ app.on('window-all-closed', () => {
 
 // 🔴 React থেকে সিগন্যাল পেলে Full Screen Rest Mode চালু করবে
 ipcMain.on('start-rest', () => {
-  mainWindow.setFullScreen(true);
-  mainWindow.show();
-  mainWindow.setAlwaysOnTop(true, 'screen-saver'); // সবকিছুর উপরে থাকবে
+  mainWindow.setFullScreen(true)
+  mainWindow.show()
+  mainWindow.setAlwaysOnTop(true, 'screen-saver') // সবকিছুর উপরে থাকবে
 })
 
 // Rest Mode শেষ হলে আবার আগের অবস্থায় ফিরে যাবে
 ipcMain.on('end-rest', () => {
-  mainWindow.setFullScreen(false);
-  mainWindow.hide();
-  mainWindow.setAlwaysOnTop(false);
+  mainWindow.setFullScreen(false)
+  mainWindow.hide()
+  mainWindow.setAlwaysOnTop(false)
 })

@@ -5,8 +5,9 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {
   // Main Process থেকে ডাটা রিসিভ করার জন্য
   onSystemIdle: (callback) => ipcRenderer.on('system-idle', (_event, isIdle) => callback(isIdle)),
-  onTogglePause: (callback) => ipcRenderer.on('toggle-pause', (_event, isPaused) => callback(isPaused)),
-  
+  onTogglePause: (callback) =>
+    ipcRenderer.on('toggle-pause', (_event, isPaused) => callback(isPaused)),
+
   // Main Process-এ কমান্ড পাঠানোর জন্য
   startRestMode: () => ipcRenderer.send('start-rest'),
   endRestMode: () => ipcRenderer.send('end-rest')
