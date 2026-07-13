@@ -13,7 +13,7 @@ function createWindow() {
     show: false, // 🔴 অ্যাপ স্টার্ট হলে উইন্ডো হাইড থাকবে
     autoHideMenuBar: true,
     fullscreen: false,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    icon: icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -107,14 +107,17 @@ app.on('window-all-closed', () => {
 
 // 🔴 React থেকে সিগন্যাল পেলে Full Screen Rest Mode চালু করবে
 ipcMain.on('start-rest', () => {
-  mainWindow.setFullScreen(true)
-  mainWindow.show()
-  mainWindow.setAlwaysOnTop(true, 'screen-saver') // সবকিছুর উপরে থাকবে
+  mainWindow.setKiosk(true); // 👈 এটি Alt+Tab এবং Windows key ব্লক করে দেবে
+  mainWindow.setFullScreen(true);
+  mainWindow.setAlwaysOnTop(true, 'screen-saver'); // সবকিছুর উপরে থাকবে
+  mainWindow.show();
+  mainWindow.focus(); // কীবোর্ড ফোকাস অ্যাপে আটকে রাখবে
 })
 
 // Rest Mode শেষ হলে আবার আগের অবস্থায় ফিরে যাবে
 ipcMain.on('end-rest', () => {
-  mainWindow.setFullScreen(false)
-  mainWindow.hide()
-  mainWindow.setAlwaysOnTop(false)
+  mainWindow.setKiosk(false); // 👈 Kiosk মোড বন্ধ করবে
+  mainWindow.setFullScreen(false);
+  mainWindow.setAlwaysOnTop(false);
+  mainWindow.hide();
 })

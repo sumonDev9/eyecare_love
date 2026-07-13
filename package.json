@@ -1,9 +1,9 @@
 {
   "name": "eyecare-love",
   "version": "1.0.0",
-  "description": "An Electron application with React",
+  "description": "Because every blink matters. ❤️",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": "Sumon Mitra",
   "homepage": "https://electron-vite.org",
   "scripts": {
     "format": "prettier --write .",
